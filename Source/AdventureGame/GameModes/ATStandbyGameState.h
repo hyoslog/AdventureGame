@@ -6,6 +6,8 @@
 #include "GameFramework/GameStateBase.h"
 #include "ATStandbyGameState.generated.h"
 
+class UATStandbyGameStateComponent;
+
 /**
  * 
  */
@@ -13,5 +15,11 @@ UCLASS()
 class AATStandbyGameState : public AGameStateBase
 {
 	GENERATED_BODY()
+
+private:
+	AATStandbyGameState(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
+private:
+	UPROPERTY()
+	TObjectPtr<UATStandbyGameStateComponent> StandbyGameStateComponent;
 };
