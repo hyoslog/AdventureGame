@@ -6,25 +6,42 @@
 #include "Components/GameStateComponent.h"
 #include "ATStandbyGameStateComponent.generated.h"
 
+class UUserWidget; 
+class UImage;
+class UATScene;
+
 /**
  * 
  */
 UCLASS()
-class UATStandbyGameStateComponent : public UGameStateComponent
+class UATStandbyGameStateComponent final : public UGameStateComponent
 {
 	GENERATED_BODY()
 	
 public:
-	enum class EStandbyState
+	/**
+	* 대기 화면 타입
+	* @warning ENUM 추가 시, CreateScenes(...)에도 작업 필요
+	*/
+	enum EStandbyScene
 	{
-		None,
-		Logo,
-		StartMenu
+		Title,
+		StartMenu,
+		Max
 	};
 
 private:
 	UATStandbyGameStateComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
+public:
+	void ChangeScene(const EStandbyScene InState);
+
 private:
-	EStandbyState CurrentState;
+	void CreateScenes(const FObjectInitializer& ObjectInitializer);
+
+private:
+	EStandbyScene CurrentScene;	
+
+	UPROPERTY()
+	TObjectPtr<UATScene> Scenes[EStandbyScene::Max];
 };

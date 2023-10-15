@@ -2,6 +2,7 @@
 
 
 #include "ATStandbyGameState.h"
+
 #include "ATStandbyGameStateComponent.h"
 
 AATStandbyGameState::AATStandbyGameState(const FObjectInitializer& ObjectInitializer)
@@ -9,4 +10,16 @@ AATStandbyGameState::AATStandbyGameState(const FObjectInitializer& ObjectInitial
 {
 	StandbyGameStateComponent = ObjectInitializer.CreateDefaultSubobject<UATStandbyGameStateComponent>(this, TEXT("StandbyGameStateComponent"));
 	check(StandbyGameStateComponent);
+}
+
+void AATStandbyGameState::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (IsValid(StandbyGameStateComponent) == false)
+	{
+		check(0);
+		return;
+	}
+	StandbyGameStateComponent->ChangeScene(UATStandbyGameStateComponent::EStandbyScene::Title);
 }

@@ -12,12 +12,18 @@ class UATStandbyGameStateComponent;
  * 
  */
 UCLASS()
-class AATStandbyGameState : public AGameStateBase
+class AATStandbyGameState final : public AGameStateBase
 {
 	GENERATED_BODY()
 
 private:
 	AATStandbyGameState(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+public:
+	TObjectPtr<UATStandbyGameStateComponent> GetStandbyGameStateComponent() const { return StandbyGameStateComponent; }
+
+private:
+	virtual void PostInitializeComponents() override;
 	
 private:
 	UPROPERTY()
