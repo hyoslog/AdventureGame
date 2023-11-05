@@ -6,8 +6,8 @@
 #include "Components/Image.h"
 #include "Components/WidgetComponent.h"
 
-#include "..\GameModes\ATStandbyGameState.h"
-#include "..\GameModes\ATStandbyGameStateComponent.h"
+#include "..\GameMode\ATStandbyGameState.h"
+#include "..\GameMode\ATStandbyGameStateComponent.h"
 
 UATTitleScene::UATTitleScene()
 {
