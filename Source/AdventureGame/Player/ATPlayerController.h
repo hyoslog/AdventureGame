@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class ADVENTUREGAME_API AATPlayerController : public APlayerController
+class AATPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	

@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class ADVENTUREGAME_API AATGameMode : public AGameModeBase
+class AATGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	

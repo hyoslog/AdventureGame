@@ -6,8 +6,14 @@
 #include "GameFramework/Character.h"
 #include "ATCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+
+/**
+ *
+ */
 UCLASS()
-class ADVENTUREGAME_API AATCharacter : public ACharacter
+class AATCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -26,4 +32,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+	UPROPERTY(VisibleAnywhere, Category = Camera)
+	TObjectPtr<USpringArmComponent> SpringArm;
+
+	UPROPERTY(VisibleAnywhere, Category = Camera)
+	TObjectPtr<UCameraComponent> Camera;
 };
