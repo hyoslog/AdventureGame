@@ -18,6 +18,7 @@ void UATStandbyGameStateComponent::ChangeScene(const EStandbyScene InState)
 	if (InState == EStandbyScene::Max)
 	{
 		check(0);
+		return;
 	}
 	
 	if (CurrentScene == InState)

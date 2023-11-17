@@ -14,32 +14,22 @@ AATCharacter::AATCharacter()
 
 	// SkeletalMesh 室特
 	static const ConstructorHelpers::FObjectFinder<USkeletalMesh> CharacterSkeletalMesh(TEXT("/Game/Characters/Mannequins/Meshes/SKM_Quinn.SKM_Quinn"));
-	if (CharacterSkeletalMesh.Succeeded() == false)
-	{
-		check(0);
-	}
+	check(CharacterSkeletalMesh.Succeeded())
+
 	USkeletalMeshComponent* CharacterMeshComponent = GetMesh();
-	if (CharacterMeshComponent == nullptr)
-	{
-		check(0);
-	}
+	check(CharacterMeshComponent);
 	CharacterMeshComponent->SetSkeletalMesh(CharacterSkeletalMesh.Object);
+	CharacterMeshComponent->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 
 	// SpringArm 持失
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	if (SpringArm == nullptr)
-	{
-		check(0);
-	}
+	check(SpringArm);
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->TargetArmLength = 400.0f;
 
 	// Camera 持失
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	if (Camera == nullptr)
-	{
-		check(0);
-	}
+	check(Camera);
 	Camera->SetupAttachment(SpringArm);
 }
 

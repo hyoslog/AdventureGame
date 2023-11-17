@@ -8,9 +8,7 @@
 UATStartMenuScene::UATStartMenuScene()
 {
 	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetAsset(TEXT("/Game/UI/Scene/W_StartMenu.W_StartMenu_C"));
-	if (WidgetAsset.Succeeded() == false)
-	{
-		check(0);
-	}
+	check(WidgetAsset.Succeeded());
+
 	WidgetClass = WidgetAsset.Class;
 }

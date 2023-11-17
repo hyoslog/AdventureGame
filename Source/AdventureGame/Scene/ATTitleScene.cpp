@@ -12,10 +12,8 @@
 UATTitleScene::UATTitleScene()
 {
 	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetAsset(TEXT("/Game/UI/Scene/W_Title.W_Title_C"));
-	if (WidgetAsset.Succeeded() == false)
-	{
-		check(0);
-	}
+	check(WidgetAsset.Succeeded());
+
 	WidgetClass = WidgetAsset.Class;
 }
 
