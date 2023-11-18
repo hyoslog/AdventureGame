@@ -4,22 +4,18 @@
 #include "ATCharacter.h"
 
 #include "Camera/CameraComponent.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 AATCharacter::AATCharacter()
+	: DefaultMappingContext(nullptr)
+	, JumpAction(nullptr)
+	, MoveAction(nullptr)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	// SkeletalMesh 세팅
-	static const ConstructorHelpers::FObjectFinder<USkeletalMesh> CharacterSkeletalMesh(TEXT("/Game/Characters/Mannequins/Meshes/SKM_Quinn.SKM_Quinn"));
-	check(CharacterSkeletalMesh.Succeeded())
-
-	USkeletalMeshComponent* CharacterMeshComponent = GetMesh();
-	check(CharacterMeshComponent);
-	CharacterMeshComponent->SetSkeletalMesh(CharacterSkeletalMesh.Object);
-	CharacterMeshComponent->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 
 	// SpringArm 생성
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -38,6 +34,13 @@ void AATCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	// Add Input Mapping Context
+	check(DefaultMappingContext);
+	const APlayerController* const PlayerController = Cast<APlayerController>(Controller);
+	check(PlayerController);
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+	check(Subsystem);
+	Subsystem->AddMappingContext(DefaultMappingContext, 0);
 }
 
 // Called every frame
@@ -52,5 +55,42 @@ void AATCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	check(EnhancedInputComponent);
+
+	// Jump
+	check(JumpAction);
+	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AATCharacter::Jump);
+	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &AATCharacter::StopJumping);
+
+	// Move
+	check(MoveAction);
+	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AATCharacter::Move);
+}
+
+void AATCharacter::Move(const FInputActionValue& InValue)
+{
+	// input is a Vector2D
+	const FVector2D MovementVector = InValue.Get<FVector2D>();
+
+	if (Controller == nullptr)
+	{
+		check(0);
+		return;
+	}
+
+	// find out which way is forward
+	const FRotator Rotation = Controller->GetControlRotation();
+	const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+	// get forward vector
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+
+	// get right vector 
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+	// add movement 
+	AddMovementInput(ForwardDirection, MovementVector.Y);
+	AddMovementInput(RightDirection, MovementVector.X);
 }
 

@@ -8,6 +8,9 @@
 
 AATGameMode::AATGameMode()
 {
-	PlayerControllerClass = AATPlayerController::StaticClass();
-	DefaultPawnClass = AATCharacter::StaticClass();
+	PlayerControllerClass = AATPlayerController::StaticClass();	
+
+	static const ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/Characters/BP_ATCharacter.BP_ATCharacter_C"));
+	check(PlayerPawnBPClass.Class);
+	DefaultPawnClass = PlayerPawnBPClass.Class;
 }
